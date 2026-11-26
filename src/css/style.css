@@ -1,0 +1,310 @@
+@import "tailwindcss";
+
+@custom-variant js (&:where(.js, .js *));
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/geist-latin.woff2") format("woff2");
+}
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --color-brand: var(--color-indigo-600);
+  --color-brand-hover: var(--color-indigo-700);
+  --color-surface: var(--color-white);
+  --color-surface-muted: var(--color-slate-50);
+  --color-ink: var(--color-slate-900);
+  --color-ink-muted: var(--color-slate-600);
+  --ease-weighted: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Named B1 Typography Styles */
+@utility heading-1 {
+  @apply text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl;
+}
+
+@utility heading-2 {
+  @apply text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl;
+}
+
+@utility heading-3 {
+  @apply text-3xl font-semibold tracking-tight sm:text-4xl;
+}
+
+@utility heading-4 {
+  @apply text-2xl font-semibold tracking-tight sm:text-3xl;
+}
+
+@utility heading-5 {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+@utility heading-6 {
+  @apply text-xl font-semibold tracking-tight;
+}
+
+@utility title-1 {
+  @apply text-xl font-medium;
+}
+
+@utility title-2 {
+  @apply text-lg font-medium;
+}
+
+@utility title-3 {
+  @apply text-base font-medium;
+}
+
+@utility title-4 {
+  @apply text-sm font-medium;
+}
+
+@utility body-1 {
+  @apply text-base font-semibold;
+}
+
+@utility body-2 {
+  @apply text-base font-medium;
+}
+
+@utility body-3 {
+  @apply text-base font-normal;
+}
+
+@utility body-4 {
+  @apply text-sm font-semibold;
+}
+
+@utility body-5 {
+  @apply text-sm font-medium;
+}
+
+@utility body-6 {
+  @apply text-sm font-normal;
+}
+
+@utility button-md {
+  @apply text-base font-semibold;
+}
+
+@utility button-sm {
+  @apply text-sm font-semibold;
+}
+
+@utility caption-1 {
+  @apply text-sm font-medium;
+}
+
+@utility caption-2 {
+  @apply text-sm font-normal;
+}
+
+@utility caption-3 {
+  @apply text-xs font-semibold tracking-wide uppercase;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink-muted);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  blockquote {
+    text-wrap: pretty;
+  }
+
+  :is(a, button, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Hero Heading Text Gradient (B5 Light Theme: #000000 -> #666666) */
+  .hero-heading-gradient {
+    background-image: linear-gradient(to right, #000000, #666666);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Interactive Controls (B2 Spacing, B3 Radius, B7 Motion, B9 States) */
+  .nav-link {
+    @apply inline-flex min-h-11 min-w-11 items-center rounded-lg px-3 title-4 whitespace-nowrap text-slate-700 transition-[color,background-color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-slate-100 hover:text-ink active:scale-[0.98] aria-[current=location]:bg-indigo-50 aria-[current=location]:text-brand-hover md:px-2 lg:px-3;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg bg-brand px-4 py-2 button-md whitespace-nowrap text-white shadow-xs transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-brand-hover hover:shadow-md active:translate-y-0 active:scale-[0.98];
+  }
+
+  .btn-header {
+    @apply inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-brand px-3 py-2 button-sm whitespace-nowrap text-white shadow-xs transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-brand-hover active:scale-[0.98];
+  }
+
+  .btn-on-brand {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg bg-surface px-4 py-2 button-md whitespace-nowrap text-brand-hover shadow-xs transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-indigo-50 hover:shadow-md active:translate-y-0 active:scale-[0.98];
+  }
+
+  /* Surface Cards (B3 Radius, B4 Full 4-Sided Borders) */
+  .feature-card {
+    @apply rounded-2xl border border-slate-200 bg-surface p-6 transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-sm;
+  }
+
+  .feature-icon-wrap {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-50 text-brand;
+  }
+
+  .step-card {
+    @apply rounded-2xl border border-slate-200 bg-surface-muted p-6;
+  }
+
+  .step-badge {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand body-1 text-white;
+  }
+
+  .testimonial-card {
+    @apply flex flex-col justify-between rounded-2xl border border-slate-200 bg-surface p-6;
+  }
+
+  .faq-item {
+    @apply rounded-2xl border border-slate-200 bg-surface transition-[border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] open:border-slate-300;
+  }
+
+  .social-link {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-ink-muted transition-[color,background-color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-slate-200/70 hover:text-ink active:scale-[0.98];
+  }
+
+  /* Animated Menu Toggle Bars (B7) */
+  .menu-bar {
+    @apply absolute block h-0.5 w-5 rounded-full bg-current transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+  }
+}
+
+/* Full-height Mobile Menu & Staggered Entrance (B7) */
+@media not all and (min-width: 48rem) {
+  .js [data-menu] {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 6rem 1.5rem 2rem;
+    background-color: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 500ms var(--ease-weighted),
+      visibility 500ms var(--ease-weighted);
+  }
+
+  .js [data-menu][data-open] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .js [data-menu] .mobile-nav-item {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+    font-weight: 600;
+    padding-inline: 1rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 500ms var(--ease-weighted),
+      transform 500ms var(--ease-weighted);
+  }
+
+  .js [data-menu] .mobile-nav-cta {
+    margin-top: 1rem;
+    min-height: 3rem;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+  }
+
+  .js [data-menu][data-open] .mobile-nav-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--stagger-index, 0) * 60ms);
+  }
+}
+
+/* Scroll Reveals (B7) */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 700ms var(--ease-weighted),
+      transform 700ms var(--ease-weighted);
+  }
+
+  .js [data-reveal="visible"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mandatory Tagline Word-by-Word Reveal (B11) */
+  .js [data-tagline-reveal][data-reveal-armed] .tagline-word {
+    opacity: 0.3;
+    transition: opacity 500ms var(--ease-weighted);
+  }
+
+  .js
+    [data-tagline-reveal][data-reveal-armed]
+    .tagline-word[data-active="true"] {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-menu] .mobile-nav-item {
+    transform: none;
+    transition-delay: 0ms;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js [data-tagline-reveal] .tagline-word {
+    opacity: 1;
+  }
+}
