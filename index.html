@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <title>Flowdesk | Plan your week and ship without tab chaos</title>
     <meta
       name="description"
@@ -39,9 +39,15 @@
     </script>
   </head>
   <body>
+    <canvas
+      id="starfield-canvas"
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 z-0 h-full w-full"
+    ></canvas>
+
     <a
       href="#main-content"
-      class="sr-only button-sm focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-brand focus:px-4 focus:py-3 focus:text-white focus:shadow-lg"
+      class="sr-only button-sm focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-zinc-950 focus:shadow-lg"
     >
       Skip to main content
     </a>
@@ -50,7 +56,7 @@
       <div class="relative mx-auto max-w-5xl p-2">
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 -z-10 rounded-2xl border border-slate-200/80 bg-surface/80 shadow-sm backdrop-blur-md"
+          class="pointer-events-none absolute inset-0 -z-10 rounded-2xl border border-white/15 bg-[#0c0c14]/75 shadow-lg backdrop-blur-xl"
         ></div>
         <nav
           aria-label="Primary"
@@ -58,7 +64,7 @@
         >
           <a
             href="#top"
-            class="relative z-40 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-2 title-2 whitespace-nowrap text-ink transition-[color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-brand active:scale-[0.98]"
+            class="relative z-40 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-2 title-2 whitespace-nowrap text-white transition-[color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-indigo-300 active:scale-[0.98]"
           >
             <svg
               class="h-8 w-8 shrink-0"
@@ -95,7 +101,7 @@
             aria-controls="mobile-menu"
             aria-expanded="false"
             aria-label="Open main menu"
-            class="group relative z-40 hidden min-h-11 min-w-11 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-[background-color,color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-surface-muted hover:text-ink active:scale-[0.98] max-md:js:inline-flex"
+            class="group relative z-40 hidden min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/15 text-slate-200 transition-[background-color,color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/10 hover:text-white active:scale-[0.98] max-md:js:inline-flex"
           >
             <span
               aria-hidden="true"
@@ -163,38 +169,67 @@
       </div>
     </header>
 
-    <main id="main-content">
+    <main id="main-content" class="relative z-10">
       <section
         id="top"
         aria-labelledby="hero-heading"
-        class="pt-10 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24"
+        class="relative overflow-x-clip pt-10 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-24"
       >
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div class="mx-auto max-w-[680px] text-left sm:text-center">
             <p
-              class="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 caption-3 text-brand-hover"
+              data-hero-stagger
+              class="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/15 px-3 py-1 caption-3 text-indigo-200"
             >
+              <span
+                aria-hidden="true"
+                class="h-1.5 w-1.5 rounded-full bg-indigo-300"
+              ></span>
               Trusted by 2,410 product teams
             </p>
             <h1
               id="hero-heading"
+              data-hero-stagger
               class="hero-heading-gradient mt-4 pb-1 heading-1"
             >
               Plan your week and ship<br class="hidden sm:inline" />
               without tab chaos
             </h1>
             <p
-              class="mx-auto mt-4 max-w-[680px] body-3 text-ink-muted sm:text-lg"
+              data-hero-stagger
+              class="mx-auto mt-4 max-w-[680px] body-3 text-slate-300 sm:text-lg"
             >
               Flowdesk puts daily priorities and linked project notes in one
               fast workspace, helping small product teams cut weekly status
               meetings from 4 hours to 35 minutes.
             </p>
-            <div class="mt-6 flex flex-col items-start gap-3 sm:items-center">
-              <a href="https://example.com/signup" class="btn-primary">
-                Start free workspace
+            <div
+              data-hero-stagger
+              class="mt-6 flex flex-col items-start gap-3 sm:items-center"
+            >
+              <a
+                href="https://example.com/signup"
+                data-hover-btn
+                class="btn-primary"
+              >
+                <span>Start free workspace</span>
+                <svg
+                  data-btn-icon
+                  class="h-4 w-4 shrink-0"
+                  viewBox="0 0 256 256"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="22"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <line x1="40" y1="128" x2="216" y2="128" />
+                  <polyline points="144 56 216 128 144 200" />
+                </svg>
               </a>
-              <p class="caption-2 text-ink-muted">
+              <p class="caption-2 text-slate-400">
                 Free forever for solo workspaces · No credit card required ·
                 Ready in 45 seconds
               </p>
@@ -202,38 +237,69 @@
           </div>
 
           <div
-            class="mx-auto mt-10 max-w-5xl rounded-2xl border border-slate-200 bg-surface-muted p-2 shadow-lg shadow-slate-900/5 sm:mt-12"
+            data-phone-stage
+            class="relative mx-auto mt-12 flex max-w-3xl items-center justify-center py-6 sm:mt-16"
           >
-            <picture>
-              <source
-                type="image/avif"
-                srcset="
-                  /images/hero-app-640.avif   640w,
-                  /images/hero-app-1024.avif 1024w,
-                  /images/hero-app-1440.avif 1440w
-                "
-                sizes="(min-width: 1024px) 1024px, 100vw"
-              />
-              <source
-                type="image/webp"
-                srcset="
-                  /images/hero-app-640.webp   640w,
-                  /images/hero-app-1024.webp 1024w,
-                  /images/hero-app-1440.webp 1440w
-                "
-                sizes="(min-width: 1024px) 1024px, 100vw"
-              />
-              <img
-                src="/images/hero-app-1024.webp"
-                alt="Flowdesk workspace showing daily priority tasks, a linked release checklist note, and a weekly shipped velocity chart"
-                width="1440"
-                height="900"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-                class="h-auto w-full rounded-lg border border-slate-200/80"
-              />
-            </picture>
+            <!-- Glowing Animated Cosmic Orb Centerpiece -->
+            <div
+              data-hero-orb
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0"
+            >
+              <div class="cosmic-orb-ring"></div>
+              <div class="cosmic-orb-core"></div>
+            </div>
+
+            <!-- Floating 3D Phone Frame -->
+            <div
+              data-hero-visual
+              class="relative z-10 w-full max-w-[300px] sm:max-w-[330px]"
+            >
+              <div data-hero-parallax class="will-change-transform">
+                <div data-phone-float class="will-change-transform">
+                  <div
+                    data-phone-tilt
+                    class="phone-frame will-change-transform"
+                  >
+                    <div class="phone-screen">
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset="
+                            /images/hero-phone-420.avif 420w,
+                            /images/hero-phone-840.avif 840w
+                          "
+                          sizes="(min-width: 640px) 330px, 300px"
+                        />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            /images/hero-phone-420.webp 420w,
+                            /images/hero-phone-840.webp 840w
+                          "
+                          sizes="(min-width: 640px) 330px, 300px"
+                        />
+                        <img
+                          src="/images/hero-phone-840.webp"
+                          alt="Flowdesk dark mobile workspace showing deep work session score, top three priorities, linked release checklist note, and weekly shipped velocity"
+                          width="840"
+                          height="1740"
+                          loading="eager"
+                          fetchpriority="high"
+                          decoding="async"
+                          class="block h-auto w-full"
+                        />
+                      </picture>
+                      <div
+                        data-phone-sheen
+                        aria-hidden="true"
+                        class="phone-sheen"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -241,24 +307,90 @@
       <section
         id="features"
         aria-labelledby="features-heading"
-        class="bg-surface-muted py-16 sm:py-24"
+        data-reveal-section
+        class="py-16 sm:py-24"
       >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" data-reveal>
-          <div class="max-w-[680px]">
-            <p class="caption-3 text-brand-hover">Benefits</p>
-            <h2 id="features-heading" class="mt-2 heading-3 text-ink">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div
+            data-stats-grid
+            data-reveal-group
+            aria-label="Flowdesk team metrics"
+            class="mb-16 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6"
+          >
+            <div data-reveal-item class="stat-card">
+              <p
+                data-counter-target="2410"
+                data-counter-format="comma"
+                class="heading-3 text-white tabular-nums"
+              >
+                2,410
+              </p>
+              <p class="mt-2 caption-2 text-slate-300">
+                Product teams active weekly
+              </p>
+            </div>
+            <div data-reveal-item class="stat-card">
+              <p
+                data-counter-target="48"
+                data-counter-suffix="%"
+                class="heading-3 text-white tabular-nums"
+              >
+                48%
+              </p>
+              <p class="mt-2 caption-2 text-slate-300">
+                Fewer weekly status meetings
+              </p>
+            </div>
+            <div data-reveal-item class="stat-card">
+              <p
+                data-counter-target="35"
+                data-counter-suffix=" min"
+                class="heading-3 text-white tabular-nums"
+              >
+                35 min
+              </p>
+              <p class="mt-2 caption-2 text-slate-300">
+                Average weekly sync time
+              </p>
+            </div>
+            <div data-reveal-item class="stat-card">
+              <p
+                data-counter-target="99.4"
+                data-counter-decimals="1"
+                data-counter-suffix="%"
+                class="heading-3 text-white tabular-nums"
+              >
+                99.4%
+              </p>
+              <p class="mt-2 caption-2 text-slate-300">
+                On time sprint handoff rate
+              </p>
+            </div>
+          </div>
+
+          <div data-reveal-heading class="max-w-[680px]">
+            <p class="caption-3 text-indigo-300">Benefits</p>
+            <h2 id="features-heading" class="mt-2 heading-3 text-white">
               Less busywork, more shipped releases
             </h2>
-            <p class="mt-4 body-3 text-ink-muted">
+            <p class="mt-4 body-3 text-slate-300">
               Replace scattered task trackers and buried team docs with four
               focused tools that keep every week moving.
             </p>
           </div>
 
-          <ul class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <li class="feature-card">
-              <div class="feature-icon-wrap">
+          <ul
+            data-reveal-group
+            class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2"
+          >
+            <li data-reveal-item data-hover-card class="feature-card">
+              <div
+                data-card-icon
+                data-lottie="checklist"
+                class="feature-icon-wrap"
+              >
                 <svg
+                  data-lottie-fallback
                   class="h-6 w-6"
                   viewBox="0 0 256 256"
                   fill="none"
@@ -273,17 +405,24 @@
                   <rect x="40" y="40" width="176" height="176" rx="16" />
                 </svg>
               </div>
-              <h3 class="mt-4 heading-6 text-ink">Context beside every task</h3>
-              <p class="mt-2 body-3 text-ink-muted">
-                <strong class="body-1 text-ink">Zero folder hunting.</strong>
+              <h3 class="mt-4 heading-6 text-white">
+                Context beside every task
+              </h3>
+              <p class="mt-2 body-3 text-slate-300">
+                <strong class="body-1 text-white">Zero folder hunting.</strong>
                 Link specs, meeting notes, and decisions directly to each
                 deliverable so nobody loses 20 minutes digging for answers.
               </p>
             </li>
 
-            <li class="feature-card">
-              <div class="feature-icon-wrap">
+            <li data-reveal-item data-hover-card class="feature-card">
+              <div
+                data-card-icon
+                data-lottie="target"
+                class="feature-icon-wrap"
+              >
                 <svg
+                  data-lottie-fallback
                   class="h-6 w-6"
                   viewBox="0 0 256 256"
                   fill="none"
@@ -299,17 +438,20 @@
                   <line x1="128" y1="128" x2="216" y2="40" />
                 </svg>
               </div>
-              <h3 class="mt-4 heading-6 text-ink">Calm daily focus list</h3>
-              <p class="mt-2 body-3 text-ink-muted">
-                <strong class="body-1 text-ink">Three clear priorities.</strong>
+              <h3 class="mt-4 heading-6 text-white">Calm daily focus list</h3>
+              <p class="mt-2 body-3 text-slate-300">
+                <strong class="body-1 text-white">
+                  Three clear priorities.
+                </strong>
                 Open every morning to the work that matters today while the
                 backlog stays neatly out of sight until you need it.
               </p>
             </li>
 
-            <li class="feature-card">
-              <div class="feature-icon-wrap">
+            <li data-reveal-item data-hover-card class="feature-card">
+              <div data-card-icon data-lottie="bolt" class="feature-icon-wrap">
                 <svg
+                  data-lottie-fallback
                   class="h-6 w-6"
                   viewBox="0 0 256 256"
                   fill="none"
@@ -325,17 +467,18 @@
                   />
                 </svg>
               </div>
-              <h3 class="mt-4 heading-6 text-ink">Fast keyboard capture</h3>
-              <p class="mt-2 body-3 text-ink-muted">
-                <strong class="body-1 text-ink">Under two seconds.</strong>
+              <h3 class="mt-4 heading-6 text-white">Fast keyboard capture</h3>
+              <p class="mt-2 body-3 text-slate-300">
+                <strong class="body-1 text-white">Under two seconds.</strong>
                 Add tasks, switch workspaces, and search months of notes without
                 lifting your hands from the keyboard.
               </p>
             </li>
 
-            <li class="feature-card">
-              <div class="feature-icon-wrap">
+            <li data-reveal-item data-hover-card class="feature-card">
+              <div data-card-icon data-lottie="bars" class="feature-icon-wrap">
                 <svg
+                  data-lottie-fallback
                   class="h-6 w-6"
                   viewBox="0 0 256 256"
                   fill="none"
@@ -352,9 +495,11 @@
                   <rect x="164" y="48" width="36" height="160" rx="4" />
                 </svg>
               </div>
-              <h3 class="mt-4 heading-6 text-ink">Automatic Friday digest</h3>
-              <p class="mt-2 body-3 text-ink-muted">
-                <strong class="body-1 text-ink">48% fewer status calls.</strong>
+              <h3 class="mt-4 heading-6 text-white">Automatic Friday digest</h3>
+              <p class="mt-2 body-3 text-slate-300">
+                <strong class="body-1 text-white">
+                  48% fewer status calls.
+                </strong>
                 Roll completed milestones and key takeaways into a concise
                 weekly summary your whole team reads in two minutes.
               </p>
@@ -366,7 +511,7 @@
       <section
         id="tagline"
         aria-label="Core workspace promise"
-        class="bg-surface py-20 sm:py-24"
+        class="py-20 sm:py-24"
       >
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p class="sr-only">
@@ -376,7 +521,7 @@
           <p
             aria-hidden="true"
             data-tagline-reveal
-            class="mx-auto max-w-[680px] heading-2 text-ink sm:text-center"
+            class="mx-auto max-w-[680px] heading-2 text-white sm:text-center"
           >
             <span class="tagline-word">Less</span>
             <span class="tagline-word">noise</span>
@@ -407,49 +552,53 @@
       <section
         id="how-it-works"
         aria-labelledby="how-it-works-heading"
-        class="bg-surface-muted py-16 sm:py-24"
+        data-reveal-section
+        class="py-16 sm:py-24"
       >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" data-reveal>
-          <div class="max-w-[680px]">
-            <p class="caption-3 text-brand-hover">How it works</p>
-            <h2 id="how-it-works-heading" class="mt-2 heading-3 text-ink">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div data-reveal-heading class="max-w-[680px]">
+            <p class="caption-3 text-indigo-300">How it works</p>
+            <h2 id="how-it-works-heading" class="mt-2 heading-3 text-white">
               From scattered ideas to shipped work in three steps
             </h2>
-            <p class="mt-4 body-3 text-ink-muted">
+            <p class="mt-4 body-3 text-slate-300">
               No heavy setup or rigid templates. Start organizing in minutes and
               let your process stay light.
             </p>
           </div>
 
-          <ol class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            <li class="step-card bg-surface">
-              <span class="step-badge">1</span>
-              <h3 class="mt-6 heading-6 text-ink">
+          <ol
+            data-reveal-group
+            class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3"
+          >
+            <li data-reveal-item data-hover-card class="step-card">
+              <span data-card-icon class="step-badge">1</span>
+              <h3 class="mt-6 heading-6 text-white">
                 Capture tasks and notes fast
               </h3>
-              <p class="mt-2 body-3 text-ink-muted">
+              <p class="mt-2 body-3 text-slate-300">
                 Drop rough thoughts, checklists, and meeting notes into your
                 workspace inbox from desktop or phone.
               </p>
             </li>
 
-            <li class="step-card bg-surface">
-              <span class="step-badge">2</span>
-              <h3 class="mt-6 heading-6 text-ink">
+            <li data-reveal-item data-hover-card class="step-card">
+              <span data-card-icon class="step-badge">2</span>
+              <h3 class="mt-6 heading-6 text-white">
                 Pick today&rsquo;s real priorities
               </h3>
-              <p class="mt-2 body-3 text-ink-muted">
+              <p class="mt-2 body-3 text-slate-300">
                 Move what matters into Today, attach the supporting note, and
                 keep everything else out of view until tomorrow.
               </p>
             </li>
 
-            <li class="step-card bg-surface">
-              <span class="step-badge">3</span>
-              <h3 class="mt-6 heading-6 text-ink">
+            <li data-reveal-item data-hover-card class="step-card">
+              <span data-card-icon class="step-badge">3</span>
+              <h3 class="mt-6 heading-6 text-white">
                 Finish work and share progress
               </h3>
-              <p class="mt-2 body-3 text-ink-muted">
+              <p class="mt-2 body-3 text-slate-300">
                 Check off completed milestones and let Flowdesk compile a clear
                 Friday update for your whole team.
               </p>
@@ -461,77 +610,84 @@
       <section
         id="testimonials"
         aria-labelledby="testimonials-heading"
-        class="bg-surface py-16 sm:py-24"
+        data-reveal-section
+        class="py-16 sm:py-24"
       >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" data-reveal>
-          <div class="max-w-[680px]">
-            <p class="caption-3 text-brand-hover">Customer proof</p>
-            <h2 id="testimonials-heading" class="mt-2 heading-3 text-ink">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div data-reveal-heading class="max-w-[680px]">
+            <p class="caption-3 text-indigo-300">Customer proof</p>
+            <h2 id="testimonials-heading" class="mt-2 heading-3 text-white">
               Used by product teams who protect deep work
             </h2>
           </div>
 
-          <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <figure class="testimonial-card">
-              <blockquote class="body-3 text-slate-700">
+          <div
+            data-reveal-group
+            class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3"
+          >
+            <figure data-reveal-item data-hover-card class="testimonial-card">
+              <blockquote class="body-3 text-slate-200">
                 &ldquo;Flowdesk replaced three separate apps for our launch
                 team. Our weekly status call dropped from 90 minutes to 18
                 minutes in the first month.&rdquo;
               </blockquote>
               <figcaption class="mt-6 flex items-center gap-3">
                 <span
+                  data-card-icon
                   aria-hidden="true"
-                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 body-4 text-brand-hover"
+                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-indigo-400/35 bg-indigo-500/20 body-4 text-indigo-200"
                 >
                   ML
                 </span>
                 <div>
-                  <p class="body-4 text-ink">Maya Lin</p>
-                  <p class="caption-2 text-ink-muted">
+                  <p class="body-4 text-white">Maya Lin</p>
+                  <p class="caption-2 text-slate-300">
                     Product Lead, Northstar Logistics
                   </p>
                 </div>
               </figcaption>
             </figure>
 
-            <figure class="testimonial-card">
-              <blockquote class="body-3 text-slate-700">
+            <figure data-reveal-item data-hover-card class="testimonial-card">
+              <blockquote class="body-3 text-slate-200">
                 &ldquo;Linking engineering notes directly to sprint tasks cut
                 back and forth questions by 42%. Everybody opens Today and knows
                 exactly what ships next.&rdquo;
               </blockquote>
               <figcaption class="mt-6 flex items-center gap-3">
                 <span
+                  data-card-icon
                   aria-hidden="true"
-                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 body-4 text-brand-hover"
+                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-indigo-400/35 bg-indigo-500/20 body-4 text-indigo-200"
                 >
                   DO
                 </span>
                 <div>
-                  <p class="body-4 text-ink">David Okafor</p>
-                  <p class="caption-2 text-ink-muted">
+                  <p class="body-4 text-white">David Okafor</p>
+                  <p class="caption-2 text-slate-300">
                     Engineering Manager, Pinecrest Health
                   </p>
                 </div>
               </figcaption>
             </figure>
 
-            <figure class="testimonial-card">
-              <blockquote class="body-3 text-slate-700">
+            <figure data-reveal-item data-hover-card class="testimonial-card">
+              <blockquote class="body-3 text-slate-200">
                 &ldquo;Most planning tools feel like another job to maintain.
                 Flowdesk loads in a blink and keeps our nine person studio
                 aligned without noise.&rdquo;
               </blockquote>
               <figcaption class="mt-6 flex items-center gap-3">
                 <span
+                  data-card-icon
                   aria-hidden="true"
-                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 body-4 text-brand-hover"
+                  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-indigo-400/35 bg-indigo-500/20 body-4 text-indigo-200"
                 >
                   EA
                 </span>
                 <div>
-                  <p class="body-4 text-ink">Elena Alvarez</p>
-                  <p class="caption-2 text-ink-muted">
+                  <p class="body-4 text-white">Elena Alvarez</p>
+                  <p class="caption-2 text-slate-300">
                     Founder, Studio Kestrel
                   </p>
                 </div>
@@ -544,24 +700,28 @@
       <section
         id="faq"
         aria-labelledby="faq-heading"
-        class="bg-surface-muted py-16 sm:py-24"
+        data-reveal-section
+        class="py-16 sm:py-24"
       >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" data-reveal>
-          <div class="max-w-[680px]">
-            <p class="caption-3 text-brand-hover">Common questions</p>
-            <h2 id="faq-heading" class="mt-2 heading-3 text-ink">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div data-reveal-heading class="max-w-[680px]">
+            <p class="caption-3 text-indigo-300">Common questions</p>
+            <h2 id="faq-heading" class="mt-2 heading-3 text-white">
               Answers before you start
             </h2>
           </div>
 
-          <div class="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <details class="faq-item group p-6">
+          <div
+            data-reveal-group
+            class="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2"
+          >
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>Is Flowdesk actually free for solo use?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -574,19 +734,19 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 Yes. Personal workspaces include unlimited tasks, linked notes,
                 and Friday summaries at no cost, with no credit card required.
               </p>
             </details>
 
-            <details class="faq-item group p-6">
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>How long does setup take for a small team?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -599,19 +759,19 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 Most teams create their workspace and bring in active weekly
                 priorities in under 15 minutes without needing a consultant.
               </p>
             </details>
 
-            <details class="faq-item group p-6">
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>Do I need to install a desktop app?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -624,19 +784,19 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 No. Flowdesk runs directly in any modern desktop or mobile
                 browser with full keyboard shortcuts and instant navigation.
               </p>
             </details>
 
-            <details class="faq-item group p-6">
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>How is this different from a plain doc editor?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -649,19 +809,19 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 Every task links straight to its project note and feeds your
                 daily focus list and Friday shipped digest automatically.
               </p>
             </details>
 
-            <details class="faq-item group p-6">
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>Can we export our notes and task history anytime?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -674,19 +834,19 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 Yes. Export any workspace to clean Markdown or JSON in one click
                 whenever you want, with zero vendor lock.
               </p>
             </details>
 
-            <details class="faq-item group p-6">
+            <details data-reveal-item class="faq-item group p-6">
               <summary
-                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-ink"
+                class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 title-3 text-white"
               >
                 <span>What if our team wants to stop using Flowdesk?</span>
                 <svg
-                  class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
+                  class="h-5 w-5 shrink-0 text-indigo-300 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45"
                   viewBox="0 0 256 256"
                   fill="none"
                   stroke="currentColor"
@@ -699,7 +859,7 @@
                   <line x1="128" y1="40" x2="128" y2="216" />
                 </svg>
               </summary>
-              <p class="mt-3 body-3 text-ink-muted">
+              <p class="mt-3 body-3 text-slate-300">
                 Cancel anytime with zero penalty. Your workspace stays readable
                 and exportable for 90 days after cancellation.
               </p>
@@ -711,45 +871,75 @@
       <section
         id="get-started"
         aria-labelledby="get-started-heading"
-        class="bg-surface py-16 sm:py-24"
+        data-reveal-section
+        class="py-16 sm:py-24"
       >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" data-reveal>
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div
-            class="rounded-3xl bg-brand px-6 py-12 text-center shadow-lg sm:px-12 sm:py-16"
+            data-reveal-heading
+            class="relative overflow-hidden rounded-3xl border border-indigo-400/30 bg-[#121222]/90 px-6 py-12 text-center shadow-2xl backdrop-blur-xl sm:px-12 sm:py-16"
           >
-            <h2
-              id="get-started-heading"
-              class="mx-auto max-w-[680px] heading-3 text-white"
-            >
-              Ready for a calmer week that ships on time?
-            </h2>
-            <p class="mx-auto mt-4 max-w-[680px] body-3 text-indigo-100">
-              Start your free Flowdesk workspace today and bring daily
-              priorities, project notes, and weekly summaries into one place.
-            </p>
-            <div class="mt-8 flex justify-center">
-              <a href="https://example.com/signup" class="btn-on-brand">
-                Start free workspace
-              </a>
+            <div
+              aria-hidden="true"
+              class="cosmic-orb-core pointer-events-none opacity-45"
+            ></div>
+            <div class="relative z-10">
+              <h2
+                id="get-started-heading"
+                class="hero-heading-gradient mx-auto max-w-[680px] pb-1 heading-3"
+              >
+                Ready for a calmer week that ships on time?
+              </h2>
+              <p class="mx-auto mt-4 max-w-[680px] body-3 text-slate-300">
+                Start your free Flowdesk workspace today and bring daily
+                priorities, project notes, and weekly summaries into one place.
+              </p>
+              <div class="mt-8 flex justify-center">
+                <a
+                  href="https://example.com/signup"
+                  data-hover-btn
+                  class="btn-on-brand"
+                >
+                  <span>Start free workspace</span>
+                  <svg
+                    data-btn-icon
+                    class="h-4 w-4 shrink-0"
+                    viewBox="0 0 256 256"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="22"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <line x1="40" y1="128" x2="216" y2="128" />
+                    <polyline points="144 56 216 128 144 200" />
+                  </svg>
+                </a>
+              </div>
+              <p class="mt-4 caption-2 text-slate-300">
+                Free forever for solo workspaces · No credit card required ·
+                Cancel anytime
+              </p>
             </div>
-            <p class="mt-4 caption-2 text-indigo-100">
-              Free forever for solo workspaces · No credit card required ·
-              Cancel anytime
-            </p>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="bg-surface-muted py-12">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <footer
+      data-reveal-section
+      class="relative z-10 border-t border-white/10 bg-[#07070c]/85 py-12 backdrop-blur-md"
+    >
+      <div data-reveal-heading class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div
           class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
         >
           <div>
             <a
               href="#top"
-              class="inline-flex min-h-11 items-center gap-2 rounded-lg pr-2 title-2 text-ink transition-[color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-brand active:scale-[0.98]"
+              class="inline-flex min-h-11 items-center gap-2 rounded-lg pr-2 title-2 text-white transition-[color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-indigo-300 active:scale-[0.98]"
             >
               <svg
                 class="h-8 w-8 shrink-0"
@@ -779,7 +969,7 @@
               </svg>
               <span class="font-semibold">Flowdesk</span>
             </a>
-            <p class="mt-2 max-w-xs caption-2 text-ink-muted">
+            <p class="mt-2 max-w-xs caption-2 text-slate-400">
               Plan your week and ship without tab chaos.
             </p>
           </div>
@@ -878,9 +1068,9 @@
         </div>
 
         <div
-          class="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between"
+          class="mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between"
         >
-          <p class="caption-2 text-ink-muted">
+          <p class="caption-2 text-slate-400">
             &copy; <span data-current-year>2026</span> Flowdesk. All rights
             reserved.
           </p>
@@ -889,7 +1079,7 @@
               href="https://example.com/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex min-h-11 items-center rounded-lg px-2 caption-2 text-ink-muted transition-[color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-ink"
+              class="inline-flex min-h-11 items-center rounded-lg px-2 caption-2 text-slate-300 transition-[color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white"
             >
               Privacy policy
             </a>
@@ -897,7 +1087,7 @@
               href="https://example.com/terms"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex min-h-11 items-center rounded-lg px-2 caption-2 text-ink-muted transition-[color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-ink"
+              class="inline-flex min-h-11 items-center rounded-lg px-2 caption-2 text-slate-300 transition-[color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white"
             >
               Terms of service
             </a>
