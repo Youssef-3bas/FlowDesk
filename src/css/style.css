@@ -185,22 +185,22 @@
     color: transparent;
   }
 
-  /* Cosmic Glowing Orb Centerpiece */
+  /* Cosmic Glowing Orb Centerpiece (pure radial gradients — zero filter:blur on animated layers) */
   .cosmic-orb-core {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(86vw, 540px);
-    height: min(86vw, 540px);
+    width: min(92vw, 620px);
+    height: min(92vw, 620px);
     border-radius: 9999px;
     background: radial-gradient(
-      circle at 38% 35%,
-      rgba(167, 139, 250, 0.72) 0%,
-      rgba(99, 102, 241, 0.5) 30%,
-      rgba(56, 189, 248, 0.22) 55%,
-      rgba(0, 0, 0, 0) 74%
+      circle at 42% 40%,
+      rgba(167, 139, 250, 0.52) 0%,
+      rgba(99, 102, 241, 0.34) 26%,
+      rgba(56, 189, 248, 0.14) 48%,
+      rgba(79, 70, 229, 0.04) 62%,
+      rgba(0, 0, 0, 0) 72%
     );
-    filter: blur(42px);
     transform: translate(-50%, -50%);
     animation: orb-pulse 9s var(--ease-weighted) infinite;
     will-change: transform, opacity;
@@ -210,21 +210,31 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(74vw, 430px);
-    height: min(74vw, 430px);
+    width: min(82vw, 520px);
+    height: min(82vw, 520px);
     border-radius: 9999px;
-    background: conic-gradient(
-      from 90deg,
-      rgba(129, 140, 248, 0.45),
-      rgba(192, 132, 252, 0.35),
-      rgba(56, 189, 248, 0.25),
-      rgba(129, 140, 248, 0.45)
+    background: radial-gradient(
+      circle at 60% 56%,
+      rgba(192, 132, 252, 0.34) 0%,
+      rgba(99, 102, 241, 0.2) 34%,
+      rgba(56, 189, 248, 0.08) 54%,
+      rgba(0, 0, 0, 0) 70%
     );
-    filter: blur(56px);
-    opacity: 0.65;
+    opacity: 0.72;
     transform: translate(-50%, -50%);
     animation: orb-ring-orbit 18s linear infinite;
     will-change: transform;
+  }
+
+  /* Below-the-fold rendering optimization */
+  .below-fold-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  .below-fold-compact {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
   }
 
   /* Sleek 3D Phone Hardware Frame */
@@ -279,13 +289,13 @@
     @apply relative inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 button-md whitespace-nowrap text-zinc-950 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-indigo-100 active:scale-[0.98];
   }
 
-  /* Dark Cosmic Glass Surface Cards (Full 4-Sided Hairline Borders) */
+  /* Dark Cosmic Surface Cards (Full 4-Sided Hairline Borders — zero per-card backdrop-filter overdraw) */
   .stat-card {
-    @apply relative rounded-2xl border border-white/10 bg-[#12121b]/85 p-6 backdrop-blur-md transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
+    @apply relative rounded-2xl border border-white/10 bg-[#11111a]/92 p-6 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
   }
 
   .feature-card {
-    @apply relative rounded-2xl border border-white/10 bg-[#12121b]/85 p-6 backdrop-blur-md transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
+    @apply relative rounded-2xl border border-white/10 bg-[#11111a]/92 p-6 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
   }
 
   .feature-icon-wrap {
@@ -293,7 +303,7 @@
   }
 
   .step-card {
-    @apply relative rounded-2xl border border-white/10 bg-[#12121b]/85 p-6 backdrop-blur-md transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
+    @apply relative rounded-2xl border border-white/10 bg-[#11111a]/92 p-6 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
   }
 
   .step-badge {
@@ -301,11 +311,11 @@
   }
 
   .testimonial-card {
-    @apply relative flex flex-col justify-between rounded-2xl border border-white/10 bg-[#12121b]/85 p-6 backdrop-blur-md transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
+    @apply relative flex flex-col justify-between rounded-2xl border border-white/10 bg-[#11111a]/92 p-6 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-indigo-400/40;
   }
 
   .faq-item {
-    @apply rounded-2xl border border-white/10 bg-[#12121b]/85 backdrop-blur-md transition-[border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] open:border-indigo-400/40 hover:border-white/20;
+    @apply rounded-2xl border border-white/10 bg-[#11111a]/92 transition-[border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] open:border-indigo-400/40 hover:border-white/20;
   }
 
   .social-link {

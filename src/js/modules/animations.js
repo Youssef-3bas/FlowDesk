@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const WEIGHTED_EASE = "power3.out";
 
@@ -139,31 +140,39 @@ function initPhoneTilt3D() {
     ? gsap.quickTo(sheen, "opacity", { duration: 0.4, ease: WEIGHTED_EASE })
     : null;
 
-  stage.addEventListener("pointermove", (event) => {
-    const rect = stage.getBoundingClientRect();
-    if (!rect.width || !rect.height) {
-      return;
-    }
-    const normX = (event.clientX - rect.left) / rect.width - 0.5;
-    const normY = (event.clientY - rect.top) / rect.height - 0.5;
+  stage.addEventListener(
+    "pointermove",
+    (event) => {
+      const rect = stage.getBoundingClientRect();
+      if (!rect.width || !rect.height) {
+        return;
+      }
+      const normX = (event.clientX - rect.left) / rect.width - 0.5;
+      const normY = (event.clientY - rect.top) / rect.height - 0.5;
 
-    rotateYTo(normX * 20);
-    rotateXTo(-normY * 16);
+      rotateYTo(normX * 20);
+      rotateXTo(-normY * 16);
 
-    if (sheenXTo && sheenOpacityTo) {
-      sheenXTo(normX * 45);
-      sheenOpacityTo(0.45);
-    }
-  });
+      if (sheenXTo && sheenOpacityTo) {
+        sheenXTo(normX * 45);
+        sheenOpacityTo(0.45);
+      }
+    },
+    { passive: true },
+  );
 
-  stage.addEventListener("pointerleave", () => {
-    rotateXTo(0);
-    rotateYTo(0);
-    if (sheenXTo && sheenOpacityTo) {
-      sheenXTo(0);
-      sheenOpacityTo(0);
-    }
-  });
+  stage.addEventListener(
+    "pointerleave",
+    () => {
+      rotateXTo(0);
+      rotateYTo(0);
+      if (sheenXTo && sheenOpacityTo) {
+        sheenXTo(0);
+        sheenOpacityTo(0);
+      }
+    },
+    { passive: true },
+  );
 }
 
 function initHeroParallax() {
