@@ -5,44 +5,67 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const WEIGHTED_EASE = "power3.out";
+let heroEntrancePlayed = false;
 
 export function initAnimations() {
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  // Run one-time hero entrance outside matchMedia revert cycles so desktop
+  // media-query / resize updates can never re-run it or leave hero stuck hidden.
+  if (!prefersReduced && !heroEntrancePlayed) {
+    heroEntrancePlayed = true;
+    initHeroEntrance();
+  }
+
   const mm = gsap.matchMedia();
 
-  mm.add("(prefers-reduced-motion: no-preference)", () => {
-    initHeroEntrance();
-    initPhoneFloat();
+  mm.add(
+    {
+      allowMotion: "(prefers-reduced-motion: no-preference)",
+      finePointer: "(hover: hover) and (pointer: fine)",
+    },
+    (context) => {
+      const { allowMotion, finePointer } = context.conditions;
 
-    const scheduleScrollTriggers = () => {
+      initActiveNavTracking();
+
+      if (!allowMotion) {
+        return;
+      }
+
+      initPhoneFloat();
       initHeroParallax();
       initSectionReveals();
       initTaglineReveal();
       initAnimatedCounters();
-      initActiveNavTracking();
-    };
 
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(scheduleScrollTriggers, { timeout: 250 });
-    } else {
-      window.setTimeout(scheduleScrollTriggers, 60);
-    }
-  });
+      const cleanups = [];
+      if (finePointer) {
+        const tiltCleanup = initPhoneTilt3D();
+        const hoverCleanup = initHoverMicroInteractions();
+        if (tiltCleanup) cleanups.push(tiltCleanup);
+        if (hoverCleanup) cleanups.push(hoverCleanup);
+      }
 
-  mm.add("(prefers-reduced-motion: reduce)", () => {
-    initActiveNavTracking();
-  });
-
-  mm.add(
-    "(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)",
-    () => {
-      initPhoneTilt3D();
-      initHoverMicroInteractions();
+      return () => {
+        for (const cleanup of cleanups) {
+          cleanup();
+        }
+      };
     },
   );
 }
 
+function clearInlineMotion(targets) {
+  gsap.set(targets, { clearProps: "transform,opacity" });
+}
+
 function initHeroEntrance() {
-  const heroItems = document.querySelectorAll("[data-hero-stagger]");
+  const heroItems = Array.from(
+    document.querySelectorAll("[data-hero-stagger]"),
+  );
   const heroVisual = document.querySelector("[data-hero-visual]");
   const heroOrb = document.querySelector("[data-hero-orb]");
 
@@ -50,49 +73,61 @@ function initHeroEntrance() {
     return;
   }
 
-  const timeline = gsap.timeline({
-    defaults: { ease: WEIGHTED_EASE },
-  });
+  const allTargets = [...heroItems, heroVisual, heroOrb].filter(Boolean);
 
-  if (heroOrb) {
-    timeline.from(
-      heroOrb,
-      {
-        scale: 0.88,
-        opacity: 0.2,
-        duration: 1.1,
-        clearProps: "transform,opacity",
-      },
-      0,
-    );
-  }
+  try {
+    const timeline = gsap.timeline({
+      defaults: { ease: WEIGHTED_EASE },
+      onInterrupt: () => clearInlineMotion(allTargets),
+    });
 
-  if (heroItems.length) {
-    timeline.from(
-      heroItems,
-      {
-        y: 24,
-        opacity: 0.01,
-        duration: 0.72,
-        stagger: 0.09,
-        clearProps: "transform,opacity",
-      },
-      0,
-    );
-  }
+    if (heroOrb) {
+      timeline.fromTo(
+        heroOrb,
+        { scale: 0.9, opacity: 0.35 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.0,
+          clearProps: "transform,opacity",
+        },
+        0,
+      );
+    }
 
-  if (heroVisual) {
-    timeline.from(
-      heroVisual,
-      {
-        y: 36,
-        scale: 0.96,
-        opacity: 0.01,
-        duration: 0.9,
-        clearProps: "transform,opacity",
-      },
-      "-=0.48",
-    );
+    if (heroItems.length) {
+      // Explicit fromTo -> opacity: 1 so target opacity is never read from a
+      // mid-flight value; starts at 0.2 so text stays visible even mid-frame.
+      timeline.fromTo(
+        heroItems,
+        { y: 20, opacity: 0.2 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.68,
+          stagger: 0.08,
+          clearProps: "transform,opacity",
+        },
+        0,
+      );
+    }
+
+    if (heroVisual) {
+      timeline.fromTo(
+        heroVisual,
+        { y: 28, scale: 0.97, opacity: 0.2 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.82,
+          clearProps: "transform,opacity",
+        },
+        "-=0.42",
+      );
+    }
+  } catch {
+    clearInlineMotion(allTargets);
   }
 }
 
@@ -140,39 +175,39 @@ function initPhoneTilt3D() {
     ? gsap.quickTo(sheen, "opacity", { duration: 0.4, ease: WEIGHTED_EASE })
     : null;
 
-  stage.addEventListener(
-    "pointermove",
-    (event) => {
-      const rect = stage.getBoundingClientRect();
-      if (!rect.width || !rect.height) {
-        return;
-      }
-      const normX = (event.clientX - rect.left) / rect.width - 0.5;
-      const normY = (event.clientY - rect.top) / rect.height - 0.5;
+  const onMove = (event) => {
+    const rect = stage.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return;
+    }
+    const normX = (event.clientX - rect.left) / rect.width - 0.5;
+    const normY = (event.clientY - rect.top) / rect.height - 0.5;
 
-      rotateYTo(normX * 20);
-      rotateXTo(-normY * 16);
+    rotateYTo(normX * 20);
+    rotateXTo(-normY * 16);
 
-      if (sheenXTo && sheenOpacityTo) {
-        sheenXTo(normX * 45);
-        sheenOpacityTo(0.45);
-      }
-    },
-    { passive: true },
-  );
+    if (sheenXTo && sheenOpacityTo) {
+      sheenXTo(normX * 45);
+      sheenOpacityTo(0.45);
+    }
+  };
 
-  stage.addEventListener(
-    "pointerleave",
-    () => {
-      rotateXTo(0);
-      rotateYTo(0);
-      if (sheenXTo && sheenOpacityTo) {
-        sheenXTo(0);
-        sheenOpacityTo(0);
-      }
-    },
-    { passive: true },
-  );
+  const onLeave = () => {
+    rotateXTo(0);
+    rotateYTo(0);
+    if (sheenXTo && sheenOpacityTo) {
+      sheenXTo(0);
+      sheenOpacityTo(0);
+    }
+  };
+
+  stage.addEventListener("pointermove", onMove, { passive: true });
+  stage.addEventListener("pointerleave", onLeave, { passive: true });
+
+  return () => {
+    stage.removeEventListener("pointermove", onMove);
+    stage.removeEventListener("pointerleave", onLeave);
+  };
 }
 
 function initHeroParallax() {
@@ -202,20 +237,30 @@ function initHeroParallax() {
 function initSectionReveals() {
   const sections = document.querySelectorAll("[data-reveal-section]");
 
+  // Progressive enhancement: never pre-hide sections at opacity: 0 on load.
+  // Content stays visible by default and glides smoothly into place onEnter.
   for (const section of sections) {
     const heading = section.querySelector("[data-reveal-heading]");
 
     if (heading) {
-      gsap.from(heading, {
-        y: 36,
-        opacity: 0,
-        duration: 0.8,
-        ease: WEIGHTED_EASE,
-        clearProps: "transform,opacity",
-        scrollTrigger: {
-          trigger: heading,
-          start: "top 88%",
-          once: true,
+      ScrollTrigger.create({
+        trigger: heading,
+        start: "top 90%",
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            heading,
+            { y: 28, opacity: 0.2 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.72,
+              ease: WEIGHTED_EASE,
+              overwrite: "auto",
+              clearProps: "transform,opacity",
+              onInterrupt: () => clearInlineMotion(heading),
+            },
+          );
         },
       });
     }
@@ -227,18 +272,26 @@ function initSectionReveals() {
         continue;
       }
 
-      gsap.from(items, {
-        y: 32,
-        scale: 0.97,
-        opacity: 0,
-        duration: 0.75,
-        stagger: 0.09,
-        ease: WEIGHTED_EASE,
-        clearProps: "transform,opacity",
-        scrollTrigger: {
-          trigger: group,
-          start: "top 86%",
-          once: true,
+      ScrollTrigger.create({
+        trigger: group,
+        start: "top 88%",
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            items,
+            { y: 26, scale: 0.98, opacity: 0.2 },
+            {
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              duration: 0.68,
+              stagger: 0.08,
+              ease: WEIGHTED_EASE,
+              overwrite: "auto",
+              clearProps: "transform,opacity",
+              onInterrupt: () => clearInlineMotion(items),
+            },
+          );
         },
       });
     }
@@ -330,6 +383,8 @@ function initAnimatedCounters() {
 }
 
 function initHoverMicroInteractions() {
+  const cleanups = [];
+
   const buttonsWithIcons = document.querySelectorAll("[data-hover-btn]");
   for (const button of buttonsWithIcons) {
     const icon = button.querySelector("[data-btn-icon]");
@@ -337,22 +392,28 @@ function initHoverMicroInteractions() {
       continue;
     }
 
-    button.addEventListener("mouseenter", () => {
+    const onEnter = () => {
       gsap.to(icon, {
         x: 4,
         duration: 0.3,
         ease: WEIGHTED_EASE,
         overwrite: "auto",
       });
-    });
-
-    button.addEventListener("mouseleave", () => {
+    };
+    const onLeave = () => {
       gsap.to(icon, {
         x: 0,
         duration: 0.3,
         ease: WEIGHTED_EASE,
         overwrite: "auto",
       });
+    };
+
+    button.addEventListener("mouseenter", onEnter, { passive: true });
+    button.addEventListener("mouseleave", onLeave, { passive: true });
+    cleanups.push(() => {
+      button.removeEventListener("mouseenter", onEnter);
+      button.removeEventListener("mouseleave", onLeave);
     });
   }
 
@@ -363,7 +424,7 @@ function initHoverMicroInteractions() {
       continue;
     }
 
-    card.addEventListener("mouseenter", () => {
+    const onEnter = () => {
       gsap.to(icon, {
         y: -2,
         scale: 1.08,
@@ -372,9 +433,8 @@ function initHoverMicroInteractions() {
         ease: WEIGHTED_EASE,
         overwrite: "auto",
       });
-    });
-
-    card.addEventListener("mouseleave", () => {
+    };
+    const onLeave = () => {
       gsap.to(icon, {
         y: 0,
         scale: 1,
@@ -383,8 +443,21 @@ function initHoverMicroInteractions() {
         ease: WEIGHTED_EASE,
         overwrite: "auto",
       });
+    };
+
+    card.addEventListener("mouseenter", onEnter, { passive: true });
+    card.addEventListener("mouseleave", onLeave, { passive: true });
+    cleanups.push(() => {
+      card.removeEventListener("mouseenter", onEnter);
+      card.removeEventListener("mouseleave", onLeave);
     });
   }
+
+  return () => {
+    for (const cleanup of cleanups) {
+      cleanup();
+    }
+  };
 }
 
 function initActiveNavTracking() {

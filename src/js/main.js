@@ -17,9 +17,13 @@ const observeLottieTrigger = () => {
       return;
     }
     loaded = true;
-    import("./modules/lottie-icons.js").then(({ initLottieIcons }) => {
-      initLottieIcons();
-    });
+    import("./modules/lottie-icons.js")
+      .then(({ initLottieIcons }) => {
+        initLottieIcons();
+      })
+      .catch(() => {
+        // Static SVG fallback icons remain visible if Lottie chunk fails
+      });
   };
 
   if (!("IntersectionObserver" in window)) {
@@ -46,9 +50,13 @@ const observeLottieTrigger = () => {
 const loadEnhancedExperience = () => {
   initStarfield();
 
-  import("./modules/animations.js").then(({ initAnimations }) => {
-    initAnimations();
-  });
+  import("./modules/animations.js")
+    .then(({ initAnimations }) => {
+      initAnimations();
+    })
+    .catch(() => {
+      // All content is visible by default if animations fail to load
+    });
 
   observeLottieTrigger();
 };
